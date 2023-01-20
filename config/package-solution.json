@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "alv-search-v-2-client-side-solution",
+    "id": "956025e8-e7bd-42f6-bcea-5c4b3d64150d",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "alv-search-v-2 description"
+      },
+      "longDescription": {
+        "default": "alv-search-v-2 description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "alv-search-v-2 Feature",
+        "description": "The feature that activates elements of the alv-search-v-2 solution.",
+        "id": "28f64a16-3e45-4293-b604-52d3304d82e1",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/alv-search-v-2.sppkg"
+  }
+}
