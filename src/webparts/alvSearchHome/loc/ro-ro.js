@@ -1,6 +1,6 @@
 define([], function() {
   return {
-    "SearchPrompt": "Search",
+    "SearchPrompt": "Cauta",
 
   }
 });

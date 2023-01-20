@@ -1,6 +1,5 @@
 define([], function() {
   return {
-    "SearchPrompt": "Search",
-
+    "SearchPrompt": "Búsqueda",
   }
 });

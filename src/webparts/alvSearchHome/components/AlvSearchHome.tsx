@@ -1,43 +1,78 @@
 import * as React from 'react';
 import styles from './AlvSearchHome.module.scss';
-import { IAlvSearchHomeProps } from './IAlvSearchHomeProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+import { IAlvSearchHomeProps, IAlvSearchHomeState } from './IAlvSearchHomeProps';
+import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
+import * as strings from 'AlvSearchHomeWebPartStrings';
 
-export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, {}> {
+const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
+// const code: string = `vla`.split("").reverse().join("");
+
+export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, IAlvSearchHomeState> {
+
+  
+  
+ /***
+*     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
+*    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
+*    8P      88    88 88V8o 88 `8bo.      88    88oobY' 88    88 8P         88    88    88 88oobY' 
+*    8b      88    88 88 V8o88   `Y8b.    88    88`8b   88    88 8b         88    88    88 88`8b   
+*    Y8b  d8 `8b  d8' 88  V888 db   8D    88    88 `88. 88b  d88 Y8b  d8    88    `8b  d8' 88 `88. 
+*     `Y88P'  `Y88P'  VP   V8P `8888Y'    YP    88   YD ~Y8888P'  `Y88P'    YP     `Y88P'  88   YD 
+*                                                                                                  
+*                                                                                                  
+*/
+
+
+  public constructor(props:IAlvSearchHomeProps){
+    super(props);
+
+    this.state = {
+        textSearch: '',
+    };
+  }
+
   public render(): React.ReactElement<IAlvSearchHomeProps> {
     const {
-      description,
-      isDarkTheme,
-      environmentMessage,
       hasTeamsContext,
-      userDisplayName
     } = this.props;
 
     return (
       <section className={`${styles.alvSearchHome} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.welcome}>
-          <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
-        </div>
-        <div>
-          <h3>Welcome to SharePoint Framework!</h3>
-          <p>
-            The SharePoint Framework (SPFx) is a extensibility model for Microsoft Viva, Microsoft Teams and SharePoint. It&#39;s the easiest way to extend Microsoft 365 with automatic Single Sign On, automatic hosting and industry standard tooling.
-          </p>
-          <h4>Learn more about SPFx development:</h4>
-          <ul className={styles.links}>
-            <li><a href="https://aka.ms/spfx" target="_blank" rel="noreferrer">SharePoint Framework Overview</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-graph" target="_blank" rel="noreferrer">Use Microsoft Graph in your solution</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-teams" target="_blank" rel="noreferrer">Build for Microsoft Teams using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-viva" target="_blank" rel="noreferrer">Build for Microsoft Viva Connections using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-store" target="_blank" rel="noreferrer">Publish SharePoint Framework applications to the marketplace</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-api" target="_blank" rel="noreferrer">SharePoint Framework API reference</a></li>
-            <li><a href="https://aka.ms/m365pnp" target="_blank" rel="noreferrer">Microsoft 365 Developer Community</a></li>
-          </ul>
-        </div>
+        <SearchBox
+            value={ this.state.textSearch }
+            styles={{ root: { maxWidth: '100%', height: '3em', fontSize: '18px' } }}
+            placeholder={ strings.SearchPrompt }
+            onSearch={ this._search.bind(this) }
+            onFocus={ null }
+            onBlur={ () => console.log('onBlur called') }
+            onChange={ this._search.bind(this) }
+            onKeyDown={(ev)=> { this._enter(ev.key)}}
+          />
+        <abbr title="Search (New) SharePoint Online">
+          <button className={ styles.searchButton } onClick={ () => { this._buttonClick( ) }}>{ strings.SearchPrompt }
+          </button></abbr>
       </section>
     );
   }
+
+  private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ( event === this.state.textSearch as any && newValue === undefined ) {
+      // This is likely an Enter key press... treat as such.
+      window.open(`https://${tenant}.sharepoint.com/sites/Lifenet/SitePages/Search-Center1.aspx?q=${event}`, "_blank");
+
+    } else {
+      this.setState({ textSearch: newValue });
+    }
+  }
+
+  private _buttonClick(): void {
+    window.open(`https://${tenant}.sharepoint.com/sites/Lifenet/SitePages/Search-Center1.aspx?q=${this.state.textSearch}`, "_blank");
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _enter(event: any, newValue?: string ): void {
+    console.log( '_enter:', event , newValue );
+  }
+
 }

@@ -6,6 +6,7 @@ declare interface IAlvSearchHomeWebPartStrings {
   AppLocalEnvironmentTeams: string;
   AppSharePointEnvironment: string;
   AppTeamsTabEnvironment: string;
+  SearchPrompt: string;
 }
 
 declare module 'AlvSearchHomeWebPartStrings' {
