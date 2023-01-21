@@ -3,7 +3,7 @@
   "solution": {
     "name": "alv-search-v-2-client-side-solution",
     "id": "956025e8-e7bd-42f6-bcea-5c4b3d64150d",
-    "version": "1.0.0.1",
+    "version": "1.0.0.2",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -30,7 +30,7 @@
         "title": "alv-search-v-2 Feature",
         "description": "The feature that activates elements of the alv-search-v-2 solution.",
         "id": "28f64a16-3e45-4293-b604-52d3304d82e1",
-        "version": "1.0.0.1"
+        "version": "1.0.0.2"
       }
     ]
   },
