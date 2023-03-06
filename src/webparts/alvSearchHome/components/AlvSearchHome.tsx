@@ -58,16 +58,23 @@ export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ( event === this.state.textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
-      window.open(`${this.props.redirectUrl}?q=${event}`, this._target );
+      // window.open(`${this.props.redirectUrl}?q=${event}`, this._target );
+      this._executeSearch( event );
 
     } else {
       this.setState({ textSearch: newValue });
     }
   }
 
-  private _buttonClick(): void {
-    window.open(`${this.props.redirectUrl}`, this._target );
+  private _buttonClick( ): void {
+    this._executeSearch( this.state.textSearch );
   }
+
+  private _executeSearch( textSearch: any ): void {
+    const queryString = this.props.queryParam ? `${this.props.queryParam.replace('{{SearchText}}',textSearch )}` : `?q=${textSearch}`;
+    window.open(`${this.props.redirectUrl}${queryString}`, this._target );
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _enter(event: any, newValue?: string ): void {
     console.log( '_enter:', event , newValue );
