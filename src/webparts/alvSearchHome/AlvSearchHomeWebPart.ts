@@ -14,6 +14,7 @@ import { IAlvSearchHomeProps } from './components/IAlvSearchHomeProps';
 
 export interface IAlvSearchHomeWebPartProps {
   redirectUrl: string;
+  queryParam: string;
 }
 
 export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSearchHomeWebPartProps> {
@@ -27,6 +28,7 @@ export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSear
       {
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         redirectUrl: this.properties.redirectUrl,
+        queryParam: this.properties.queryParam,
       }
     );
 
@@ -37,6 +39,7 @@ export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSear
     // this._environmentMessage = this._getEnvironmentMessage();
 
     if ( !this.properties.redirectUrl ) this.properties.redirectUrl = `/sites/Lifenet/SitePages/Search-Center1.aspx`;
+    if ( !this.properties.queryParam ) this.properties.queryParam = `?q={{SearchText}}`;
     return super.onInit().then(async _ => {
       //
     });
@@ -91,7 +94,11 @@ export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSear
                 PropertyPaneTextField('redirectUrl', {
                   label: `Redirect Url starting with /sites/`,
                   description: `Example: /sites/SiteCollection/SitePages/Search-Center1.aspx`
-                })
+                }),
+                PropertyPaneTextField('queryParam', {
+                  label: `Redirect Url starting with /sites/`,
+                  description: 'Example: ?q=${{SearchText}} - Replaces {{SearchText}} with text box value'
+                }),
               ]
             }
           ]
