@@ -4,13 +4,11 @@ import { IAlvSearchHomeProps, IAlvSearchHomeState } from './IAlvSearchHomeProps'
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import * as strings from 'AlvSearchHomeWebPartStrings';
 
-const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
-// const code: string = `vla`.split("").reverse().join("");
-
 export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, IAlvSearchHomeState> {
 
-  
-  
+  // Auto open in new window if you are gulping since the other window will probably not work
+  private _target = window.location.search.toLocaleLowerCase().indexOf( `debugmanifestsfile` ) > -1 ? `_blank` : `_self`;
+
  /***
 *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
 *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
@@ -60,7 +58,7 @@ export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ( event === this.state.textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
-      window.open(`https://${tenant}.sharepoint.com/sites/Lifenet/SitePages/Search-Center1.aspx?q=${event}`, "_blank");
+      window.open(`${this.props.redirectUrl}?q=${event}`, this._target );
 
     } else {
       this.setState({ textSearch: newValue });
@@ -68,7 +66,7 @@ export default class AlvSearchHome extends React.Component<IAlvSearchHomeProps, 
   }
 
   private _buttonClick(): void {
-    window.open(`https://${tenant}.sharepoint.com/sites/Lifenet/SitePages/Search-Center1.aspx?q=${this.state.textSearch}`, "_blank");
+    window.open(`${this.props.redirectUrl}`, this._target );
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _enter(event: any, newValue?: string ): void {
