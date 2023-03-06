@@ -3,7 +3,7 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -13,7 +13,7 @@ import AlvSearchHome from './components/AlvSearchHome';
 import { IAlvSearchHomeProps } from './components/IAlvSearchHomeProps';
 
 export interface IAlvSearchHomeWebPartProps {
-  description: string;
+  redirectUrl: string;
 }
 
 export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSearchHomeWebPartProps> {
@@ -26,25 +26,30 @@ export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSear
       AlvSearchHome,
       {
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
+        redirectUrl: this.properties.redirectUrl,
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    this._environmentMessage = this._getEnvironmentMessage();
+  protected async onInit(): Promise<void> {
+    // this._environmentMessage = this._getEnvironmentMessage();
 
-    return super.onInit();
+    if ( !this.properties.redirectUrl ) this.properties.redirectUrl = `/sites/Lifenet/SitePages/Search-Center1.aspx`;
+    return super.onInit().then(async _ => {
+      //
+    });
+
   }
 
-  private _getEnvironmentMessage(): string {
-    if (!!this.context.sdks.microsoftTeams) { // running in Teams
-      return this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentTeams : strings.AppTeamsTabEnvironment;
-    }
+  // private _getEnvironmentMessage(): string {
+  //   if (!!this.context.sdks.microsoftTeams) { // running in Teams
+  //     return this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentTeams : strings.AppTeamsTabEnvironment;
+  //   }
 
-    return this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentSharePoint : strings.AppSharePointEnvironment;
-  }
+  //   return this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentSharePoint : strings.AppSharePointEnvironment;
+  // }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     if (!currentTheme) {
@@ -83,8 +88,9 @@ export default class AlvSearchHomeWebPart extends BaseClientSideWebPart<IAlvSear
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('redirectUrl', {
+                  label: `Redirect Url starting with /sites/`,
+                  description: `Example: /sites/SiteCollection/SitePages/Search-Center1.aspx`
                 })
               ]
             }
